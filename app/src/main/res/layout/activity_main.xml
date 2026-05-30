@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#F4F4F4">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_marginBottom="16dp">
+
+        <TextView android:id="@+id/tvOwedToMe"
+            android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+            android:text="Owed to me:\n$0.00" android:textAlignment="center" android:textColor="#2ecc71" android:textStyle="bold"/>
+
+        <TextView android:id="@+id/tvIOwe"
+            android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+            android:text="I owe:\n$0.00" android:textAlignment="center" android:textColor="#e74c3c" android:textStyle="bold"/>
+
+        <TextView android:id="@+id/tvNetBalance"
+            android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+            android:text="Net:\n$0.00" android:textAlignment="center" android:textColor="#3498db" android:textStyle="bold"/>
+    </LinearLayout>
+
+    <EditText android:id="@+id/etPerson"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:hint="Person's Name" android:layout_marginBottom="8dp"/>
+
+    <EditText android:id="@+id/etAmount"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:hint="Amount" android:inputType="numberDecimal" android:layout_marginBottom="8dp"/>
+
+    <Spinner android:id="@+id/spinnerType"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"/>
+
+    <Button android:id="@+id/btnAdd"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="Add Record" android:backgroundTint="#34495e" android:layout_marginBottom="16dp"/>
+
+    <ListView android:id="@+id/listView"
+        android:layout_width="match_parent" android:layout_height="match_parent"/>
+
+</LinearLayout>
