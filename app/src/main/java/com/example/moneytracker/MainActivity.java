@@ -47,7 +47,15 @@ public class MainActivity extends AppCompatActivity {
 
         btnAdd.setOnClickListener(v -> addRecord());
 
-                // LONG CLICK LISTENER: Tap and hold to delete a transaction
+        // FIXED: Restored the normal click listener to open the Member Ledger screen
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            Transaction t = transactionList.get(position);
+            Intent intent = new Intent(MainActivity.this, MemberActivity.class);
+            intent.putExtra("PERSON_NAME", t.getPerson());
+            startActivity(intent);
+        });
+
+        // LONG CLICK LISTENER: Tap and hold to delete a transaction
         listView.setOnItemLongClickListener((parent, view, position, id) -> {
             Transaction t = transactionList.get(position);
             
@@ -62,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
                 
             return true; // Tells Android we handled the long click
         });
-
     }
 
     @Override
