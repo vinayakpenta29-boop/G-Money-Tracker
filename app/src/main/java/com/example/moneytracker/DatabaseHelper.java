@@ -11,7 +11,7 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "MoneyTracker.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String TABLE_NAME = "transactions";
 
     public DatabaseHelper(Context context) {
@@ -20,7 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, PERSON TEXT, AMOUNT REAL, TYPE TEXT)";
+        String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, PERSON TEXT, AMOUNT REAL, TYPE TEXT, DATE TEXT)";
         db.execSQL(createTable);
     }
 
@@ -30,12 +30,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean addTransaction(String person, double amount, String type) {
+    public boolean addTransaction(String person, double amount, String type, String date) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("PERSON", person);
         contentValues.put("AMOUNT", amount);
         contentValues.put("TYPE", type);
+        contentValues.put("DATE", date);
         long result = db.insert(TABLE_NAME, null, contentValues);
         return result != -1;
     }
@@ -56,7 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String person = cursor.getString(1);
                 double amount = cursor.getDouble(2);
                 String type = cursor.getString(3);
-                list.add(new Transaction(id, person, amount, type));
+                list.add(new Transaction(id, person, amount, type, date));
             } while (cursor.moveToNext());
         }
         cursor.close();
