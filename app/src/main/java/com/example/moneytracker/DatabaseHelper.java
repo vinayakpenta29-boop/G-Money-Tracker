@@ -11,7 +11,7 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "MoneyTracker.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 2; // Incremented version
     private static final String TABLE_NAME = "transactions";
 
     public DatabaseHelper(Context context) {
@@ -20,6 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        // Added DATE TEXT
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, PERSON TEXT, AMOUNT REAL, TYPE TEXT, DATE TEXT)";
         db.execSQL(createTable);
     }
@@ -46,10 +47,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete(TABLE_NAME, "ID=?", new String[]{String.valueOf(id)});
     }
 
+    // Get ALL transactions
     public List<Transaction> getAllTransactions() {
+        return queryDatabase("SELECT * FROM " + TABLE_NAME + " ORDER BY ID DESC");
+    }
+
+    // Get transactions for a SPECIFIC person
+    public List<Transaction> getTransactionsByPerson(String personName) {
+        return queryDatabase("SELECT * FROM " + TABLE_NAME + " WHERE PERSON = '" + personName + "' ORDER BY ID DESC");
+    }
+
+    // Helper method to read the cursor
+    private List<Transaction> queryDatabase(String query) {
         List<Transaction> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
             do {
@@ -57,6 +69,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String person = cursor.getString(1);
                 double amount = cursor.getDouble(2);
                 String type = cursor.getString(3);
+                String date = cursor.getString(4);
                 list.add(new Transaction(id, person, amount, type, date));
             } while (cursor.moveToNext());
         }
