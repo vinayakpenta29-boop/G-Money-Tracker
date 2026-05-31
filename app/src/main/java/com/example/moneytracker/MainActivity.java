@@ -47,13 +47,22 @@ public class MainActivity extends AppCompatActivity {
 
         btnAdd.setOnClickListener(v -> addRecord());
 
-        // CLICK LISTENER: Open Member Statement when tapping a transaction
-        listView.setOnItemClickListener((parent, view, position, id) -> {
+                // LONG CLICK LISTENER: Tap and hold to delete a transaction
+        listView.setOnItemLongClickListener((parent, view, position, id) -> {
             Transaction t = transactionList.get(position);
-            Intent intent = new Intent(MainActivity.this, MemberActivity.class);
-            intent.putExtra("PERSON_NAME", t.getPerson());
-            startActivity(intent);
+            
+            new android.app.AlertDialog.Builder(MainActivity.this)
+                .setTitle("Delete Transaction")
+                .setMessage("Delete this $" + t.getAmount() + " record for " + t.getPerson() + "?")
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    deleteTransaction(t.getId());
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+                
+            return true; // Tells Android we handled the long click
         });
+
     }
 
     @Override
