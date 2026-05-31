@@ -37,6 +37,22 @@ public class MemberActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
         
         calculateMemberStatement();
+
+        // LONG CLICK LISTENER FOR MEMBER SCREEN
+        listView.setOnItemLongClickListener((parent, view, position, id) -> {
+            Transaction t = memberTransactions.get(position);
+            
+            new android.app.AlertDialog.Builder(MemberActivity.this)
+                .setTitle("Delete Transaction")
+                .setMessage("Delete this $" + t.getAmount() + " record?")
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    deleteTransaction(t.getId());
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+                
+            return true;
+        });
     }
 
     private void calculateMemberStatement() {
@@ -70,29 +86,5 @@ public class MemberActivity extends AppCompatActivity {
     public void deleteTransaction(int id) {
         dbHelper.deleteTransaction(id);
         loadMemberData(); // Reload UI
-    }
-
-    private void loadMemberData() {
-        memberTransactions = dbHelper.getTransactionsByPerson(personName);
-        TransactionAdapter adapter = new TransactionAdapter(this, memberTransactions);
-        listView.setAdapter(adapter);
-        
-        calculateMemberStatement();
-
-        // LONG CLICK LISTENER FOR MEMBER SCREEN
-        listView.setOnItemLongClickListener((parent, view, position, id) -> {
-            Transaction t = memberTransactions.get(position);
-            
-            new android.app.AlertDialog.Builder(MemberActivity.this)
-                .setTitle("Delete Transaction")
-                .setMessage("Delete this $" + t.getAmount() + " record?")
-                .setPositiveButton("Delete", (dialog, which) -> {
-                    deleteTransaction(t.getId());
-                })
-                .setNegativeButton("Cancel", null)
-                .show();
-                
-            return true;
-        });
     }
 }
