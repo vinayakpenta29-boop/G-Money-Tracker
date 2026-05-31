@@ -5,16 +5,19 @@ public class Transaction {
     private String person;
     private double amount;
     private String type; // "owes_me" or "i_owe"
+    private String date;
 
-    public Transaction(int id, String person, double amount, String type) {
+    public Transaction(int id, String person, double amount, String type, String date) {
         this.id = id;
         this.person = person;
         this.amount = amount;
         this.type = type;
+        this.date = date;
     }
 
     public int getId() { return id; }
     public String getPerson() { return person; }
     public double getAmount() { return amount; }
     public String getType() { return type; }
+    public String getDate() { return date; }
 }
