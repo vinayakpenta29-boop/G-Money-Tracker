@@ -6,7 +6,9 @@
         android:allowBackup="true"
         android:label="Money Tracker"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MoneyTracker"> <activity
+        android:theme="@style/Theme.MoneyTracker"> 
+        
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -14,6 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".MemberActivity" />
         
     </application>
 </manifest>
