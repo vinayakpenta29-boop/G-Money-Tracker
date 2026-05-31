@@ -4,8 +4,8 @@ public class Transaction {
     private int id;
     private String person;
     private double amount;
-    private String type; // "owes_me" or "i_owe"
-    private String date;
+    private String type; 
+    private String date; // NEW: Added Date
 
     public Transaction(int id, String person, double amount, String type, String date) {
         this.id = id;
