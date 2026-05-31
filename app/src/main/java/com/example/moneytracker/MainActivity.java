@@ -1,5 +1,6 @@
 package com.example.moneytracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -9,7 +10,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
         dbHelper = new DatabaseHelper(this);
 
-        // Initialize UI components
         tvOwedToMe = findViewById(R.id.tvOwedToMe);
         tvIOwe = findViewById(R.id.tvIOwe);
         tvNetBalance = findViewById(R.id.tvNetBalance);
@@ -38,15 +41,25 @@ public class MainActivity extends AppCompatActivity {
         Button btnAdd = findViewById(R.id.btnAdd);
         listView = findViewById(R.id.listView);
 
-        // Set up Spinner (Dropdown)
         String[] types = {"They owe me", "I owe them"};
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, types);
         spinnerType.setAdapter(spinnerAdapter);
 
-        // Add Button Listener
         btnAdd.setOnClickListener(v -> addRecord());
 
-        loadData();
+        // CLICK LISTENER: Open Member Statement when tapping a transaction
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            Transaction t = transactionList.get(position);
+            Intent intent = new Intent(MainActivity.this, MemberActivity.class);
+            intent.putExtra("PERSON_NAME", t.getPerson());
+            startActivity(intent);
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadData(); // Reload data when coming back from Member screen
     }
 
     private void addRecord() {
@@ -60,8 +73,11 @@ public class MainActivity extends AppCompatActivity {
 
         double amount = Double.parseDouble(amountStr);
         String type = spinnerType.getSelectedItemPosition() == 0 ? "owes_me" : "i_owe";
+        
+        // Auto-generate today's date
+        String currentDate = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(new Date());
 
-        boolean success = dbHelper.addTransaction(person, amount, type);
+        boolean success = dbHelper.addTransaction(person, amount, type, currentDate);
         if (success) {
             etPerson.setText("");
             etAmount.setText("");
@@ -84,17 +100,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void calculateTotals() {
-        double owedToMe = 0;
-        double iOwe = 0;
-
+        double owedToMe = 0, iOwe = 0;
         for (Transaction t : transactionList) {
-            if (t.getType().equals("owes_me")) {
-                owedToMe += t.getAmount();
-            } else {
-                iOwe += t.getAmount();
-            }
+            if (t.getType().equals("owes_me")) owedToMe += t.getAmount();
+            else iOwe += t.getAmount();
         }
-
         tvOwedToMe.setText("Owed to me:\n$" + String.format("%.2f", owedToMe));
         tvIOwe.setText("I owe:\n$" + String.format("%.2f", iOwe));
         tvNetBalance.setText("Net Balance:\n$" + String.format("%.2f", (owedToMe - iOwe)));
