@@ -117,31 +117,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void switchTab(int index) {
-        tabMembers.setBackgroundColor(Color.TRANSPARENT);
-        tabTransactions.setBackgroundColor(Color.TRANSPARENT);
-        tabSettlement.setBackgroundColor(Color.TRANSPARENT);
+        // 1. Reset all tabs to unselected state (transparent background, muted text)
+        tabMembers.setBackgroundResource(0); // Removes background
+        tabMembers.setTextColor(Color.parseColor("#64748B")); // textSecondary
+        
+        tabTransactions.setBackgroundResource(0);
+        tabTransactions.setTextColor(Color.parseColor("#64748B"));
+        
+        tabSettlement.setBackgroundResource(0);
+        tabSettlement.setTextColor(Color.parseColor("#64748B"));
 
+        // Hide all layouts
         layoutMembers.setVisibility(View.GONE);
         layoutTransactions.setVisibility(View.GONE);
         layoutSettlement.setVisibility(View.GONE);
 
-        String activeColor = "#E0E0E0"; 
-
+        // 2. Set the active tab (white pill background, dark text)
         if (index == 0) {
-            tabMembers.setBackgroundColor(Color.parseColor(activeColor));
+            tabMembers.setBackgroundResource(R.drawable.tab_selected);
+            tabMembers.setTextColor(Color.parseColor("#0F172A")); // textPrimary
             layoutMembers.setVisibility(View.VISIBLE);
-            updateCurrentMembersList(); // Refresh list when tab opens
+            updateCurrentMembersList();
         } else if (index == 1) {
-            tabTransactions.setBackgroundColor(Color.parseColor(activeColor));
+            tabTransactions.setBackgroundResource(R.drawable.tab_selected);
+            tabTransactions.setTextColor(Color.parseColor("#0F172A"));
             layoutTransactions.setVisibility(View.VISIBLE);
             loadMembersIntoSpinner(); 
             loadTransactions();
         } else if (index == 2) {
-            tabSettlement.setBackgroundColor(Color.parseColor(activeColor));
+            tabSettlement.setBackgroundResource(R.drawable.tab_selected);
+            tabSettlement.setTextColor(Color.parseColor("#0F172A"));
             layoutSettlement.setVisibility(View.VISIBLE);
             loadSettlementTables();
         }
     }
+
 
     // --- TAB 1 LOGIC ---
     private void addMember() {
