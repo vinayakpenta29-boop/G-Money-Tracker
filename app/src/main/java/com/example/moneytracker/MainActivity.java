@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         tableOweMe = findViewById(R.id.tableOweMe);
         tableIOwe = findViewById(R.id.tableIOwe);
 
-        String[] types = {"They owe me", "I owe them"};
+        String[] types = {"They owe me - I'm Paid", "I owe them - I'm Taken"};
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, types);
         spinnerType.setAdapter(spinnerAdapter);
     }
