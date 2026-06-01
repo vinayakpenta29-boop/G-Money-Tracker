@@ -122,7 +122,7 @@
                     app:cardCornerRadius="16dp" app:cardElevation="0dp" app:cardBackgroundColor="@color/colorSurface" android:layout_marginBottom="16dp">
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
                         <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                            android:text="They Owe Me" android:textColor="@color/positiveGreen" android:textStyle="bold" android:textSize="18sp" android:layout_marginBottom="12dp"/>
+                            android:text="They Owe Me (I'm Paid to them)" android:textColor="@color/positiveGreen" android:textStyle="bold" android:textSize="18sp" android:layout_marginBottom="12dp"/>
                         <TableLayout android:id="@+id/tableOweMe" android:layout_width="match_parent" android:layout_height="wrap_content" android:stretchColumns="*"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -132,7 +132,7 @@
                     app:cardCornerRadius="16dp" app:cardElevation="0dp" app:cardBackgroundColor="@color/colorSurface" android:layout_marginBottom="24dp">
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
                         <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                            android:text="I Owe Them" android:textColor="@color/negativeRed" android:textStyle="bold" android:textSize="18sp" android:layout_marginBottom="12dp"/>
+                            android:text="I Owe Them (I'm Taken from them)" android:textColor="@color/negativeRed" android:textStyle="bold" android:textSize="18sp" android:layout_marginBottom="12dp"/>
                         <TableLayout android:id="@+id/tableIOwe" android:layout_width="match_parent" android:layout_height="wrap_content" android:stretchColumns="*"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
