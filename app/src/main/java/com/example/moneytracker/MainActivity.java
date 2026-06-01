@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -29,10 +30,11 @@ public class MainActivity extends AppCompatActivity {
     // Tabs
     private TextView tabMembers, tabTransactions, tabSettlement;
     private LinearLayout layoutMembers, layoutTransactions;
-    private View layoutSettlement; // ScrollView
+    private View layoutSettlement; 
 
     // Tab 1: Members
     private EditText etNewMemberName;
+    private TextView tvCurrentMembers; // NEW: The view inside the CardView
 
     // Tab 2: Transactions
     private Spinner spinnerMembers, spinnerType;
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         setupTabs();
         loadMembersIntoSpinner();
         loadTransactions();
+        updateCurrentMembersList(); // Load the names when app starts
 
         // Add Member Button
         findViewById(R.id.btnAddMember).setOnClickListener(v -> addMember());
@@ -91,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         layoutSettlement = findViewById(R.id.layoutSettlement);
 
         etNewMemberName = findViewById(R.id.etNewMemberName);
+        tvCurrentMembers = findViewById(R.id.tvCurrentMembers); // Init the new text view
         spinnerMembers = findViewById(R.id.spinnerMembers);
         etAmount = findViewById(R.id.etAmount);
         spinnerType = findViewById(R.id.spinnerType);
@@ -109,12 +113,10 @@ public class MainActivity extends AppCompatActivity {
         tabTransactions.setOnClickListener(v -> switchTab(1));
         tabSettlement.setOnClickListener(v -> switchTab(2));
         
-        // Open the Members tab by default when the app starts
-        switchTab(0);
+        switchTab(0); // Open Members tab by default
     }
 
     private void switchTab(int index) {
-        // Reset colors
         tabMembers.setBackgroundColor(Color.TRANSPARENT);
         tabTransactions.setBackgroundColor(Color.TRANSPARENT);
         tabSettlement.setBackgroundColor(Color.TRANSPARENT);
@@ -123,15 +125,16 @@ public class MainActivity extends AppCompatActivity {
         layoutTransactions.setVisibility(View.GONE);
         layoutSettlement.setVisibility(View.GONE);
 
-        String activeColor = "#E0E0E0"; // Light grey for active tab
+        String activeColor = "#E0E0E0"; 
 
         if (index == 0) {
             tabMembers.setBackgroundColor(Color.parseColor(activeColor));
             layoutMembers.setVisibility(View.VISIBLE);
+            updateCurrentMembersList(); // Refresh list when tab opens
         } else if (index == 1) {
             tabTransactions.setBackgroundColor(Color.parseColor(activeColor));
             layoutTransactions.setVisibility(View.VISIBLE);
-            loadMembersIntoSpinner(); // Ensure spinner is updated when tab is opened
+            loadMembersIntoSpinner(); 
             loadTransactions();
         } else if (index == 2) {
             tabSettlement.setBackgroundColor(Color.parseColor(activeColor));
@@ -150,15 +153,28 @@ public class MainActivity extends AppCompatActivity {
         if (dbHelper.addMember(name)) {
             Toast.makeText(this, "Member Added", Toast.LENGTH_SHORT).show();
             etNewMemberName.setText("");
+            updateCurrentMembersList(); // Immediately update the CardView UI!
         } else {
             Toast.makeText(this, "Member might already exist", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Method to format and display the comma separated names in the CardView
+    private void updateCurrentMembersList() {
+        List<String> members = dbHelper.getAllMembers();
+        if (members.isEmpty()) {
+            tvCurrentMembers.setText("Members: None yet");
+        } else {
+            // Joins the list of names with a comma and space
+            String joinedNames = TextUtils.join(", ", members);
+            tvCurrentMembers.setText("Members: " + joinedNames);
         }
     }
 
     // --- TAB 2 LOGIC ---
     private void loadMembersIntoSpinner() {
         List<String> members = dbHelper.getAllMembers();
-        members.add(0, "--Select Member--"); // Default option at the top
+        members.add(0, "--Select Member--"); 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, members);
         spinnerMembers.setAdapter(adapter);
     }
@@ -196,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
     public void deleteTransaction(int id) {
         dbHelper.deleteTransaction(id);
         loadTransactions();
-        loadSettlementTables(); // Refresh tables if open
+        loadSettlementTables();
     }
 
     private void showMemberLedgerPopup(String personName) {
@@ -251,16 +267,15 @@ public class MainActivity extends AppCompatActivity {
 
             double net = owesMe - iOwe;
 
-            if (net > 0) { // They owe me
+            if (net > 0) {
                 addDataRow(tableOweMe, member, owesMe, iOwe, net);
                 t1Taken += owesMe; t1Paid += iOwe; t1Bal += net;
-            } else if (net < 0) { // I owe them
+            } else if (net < 0) { 
                 addDataRow(tableIOwe, member, iOwe, owesMe, Math.abs(net));
                 t2Taken += iOwe; t2Paid += owesMe; t2Bal += Math.abs(net);
             }
         }
 
-        // Add Grand Totals
         addTotalRow(tableOweMe, t1Taken, t1Paid, t1Bal);
         addTotalRow(tableIOwe, t2Taken, t2Paid, t2Bal);
     }
