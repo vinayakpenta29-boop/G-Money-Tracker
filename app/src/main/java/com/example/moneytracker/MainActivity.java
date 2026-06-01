@@ -257,6 +257,11 @@ public class MainActivity extends AppCompatActivity {
     private void loadSettlementTables() {
         tableOweMe.removeAllViews();
         tableIOwe.removeAllViews();
+        
+        // Set tables to stretch the first column (Name) and wrap the numbers
+        tableOweMe.setColumnStretchable(0, true);
+        tableIOwe.setColumnStretchable(0, true);
+
         addHeaderRow(tableOweMe);
         addHeaderRow(tableIOwe);
 
@@ -292,38 +297,86 @@ public class MainActivity extends AppCompatActivity {
 
     private void addHeaderRow(TableLayout table) {
         TableRow row = new TableRow(this);
-        row.addView(createTextView("Name", true));
-        row.addView(createTextView("Taken", true));
-        row.addView(createTextView("Paid", true));
-        row.addView(createTextView("Balance", true));
+        
+        // Headers: Name (Left), Numbers (Right)
+        row.addView(createHeaderTextView("NAME", false));
+        row.addView(createHeaderTextView("TAKEN", true));
+        row.addView(createHeaderTextView("PAID", true));
+        row.addView(createHeaderTextView("BALANCE", true));
         table.addView(row);
+        
+        // Add a subtle divider line under the header
+        View divider = new View(this);
+        divider.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, 2));
+        divider.setBackgroundColor(Color.parseColor("#E2E8F0")); // Light slate border
+        table.addView(divider);
     }
 
     private void addDataRow(TableLayout table, String name, double taken, double paid, double bal) {
         TableRow row = new TableRow(this);
-        row.addView(createTextView(name, false));
-        row.addView(createTextView("$" + String.format("%.2f", taken), false));
-        row.addView(createTextView("$" + String.format("%.2f", paid), false));
-        row.addView(createTextView("$" + String.format("%.2f", bal), true));
+        // Add vertical spacing to rows so they breathe
+        row.setPadding(0, 16, 0, 16); 
+        
+        // Data styling: Name is dark, Numbers are muted slate, Balance is bold dark
+        row.addView(createDataTextView(name, false, false, "#0F172A"));
+        row.addView(createDataTextView("$" + String.format("%.2f", taken), true, false, "#475569"));
+        row.addView(createDataTextView("$" + String.format("%.2f", paid), true, false, "#475569"));
+        row.addView(createDataTextView("$" + String.format("%.2f", bal), true, true, "#0F172A"));
         table.addView(row);
+        
+        // Add a very faint divider between rows
+        View divider = new View(this);
+        divider.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, 1));
+        divider.setBackgroundColor(Color.parseColor("#F1F5F9"));
+        table.addView(divider);
     }
 
     private void addTotalRow(TableLayout table, double taken, double paid, double bal) {
         TableRow row = new TableRow(this);
-        row.addView(createTextView("TOTAL", true));
-        row.addView(createTextView("$" + String.format("%.2f", taken), true));
-        row.addView(createTextView("$" + String.format("%.2f", paid), true));
-        row.addView(createTextView("$" + String.format("%.2f", bal), true));
-        row.setBackgroundColor(Color.parseColor("#EEEEEE"));
+        row.setPadding(0, 24, 0, 24); // Thick padding for the total row
+        
+        // Premium Indigo 50 background tint
+        row.setBackgroundColor(Color.parseColor("#EEF2FF")); 
+        
+        // Primary brand color for the text
+        String totalColor = "#4F46E5"; 
+
+        row.addView(createDataTextView("TOTAL", false, true, totalColor));
+        row.addView(createDataTextView("$" + String.format("%.2f", taken), true, true, totalColor));
+        row.addView(createDataTextView("$" + String.format("%.2f", paid), true, true, totalColor));
+        row.addView(createDataTextView("$" + String.format("%.2f", bal), true, true, totalColor));
+        
         table.addView(row);
     }
 
-    private TextView createTextView(String text, boolean isBold) {
+    // Helper for Headers (Smaller, Muted, Uppercase)
+    private TextView createHeaderTextView(String text, boolean alignRight) {
         TextView tv = new TextView(this);
         tv.setText(text);
-        tv.setPadding(8, 12, 8, 12);
-        tv.setTextColor(Color.BLACK);
-        if (isBold) tv.setTypeface(null, Typeface.BOLD);
+        tv.setPadding(8, 8, 8, 16);
+        tv.setTextColor(Color.parseColor("#64748B")); // Slate gray
+        tv.setTextSize(12f);
+        tv.setTypeface(null, Typeface.BOLD);
+        tv.setLetterSpacing(0.05f); // Premium tracking (spacing between letters)
+        if (alignRight) {
+            tv.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
+        }
+        return tv;
+    }
+
+    // Helper for Data Rows (Flexible color, weight, and alignment)
+    private TextView createDataTextView(String text, boolean alignRight, boolean isBold, String hexColor) {
+        TextView tv = new TextView(this);
+        tv.setText(text);
+        tv.setPadding(8, 8, 8, 8);
+        tv.setTextColor(Color.parseColor(hexColor));
+        tv.setTextSize(14f);
+        if (isBold) {
+            tv.setTypeface(null, Typeface.BOLD);
+        }
+        if (alignRight) {
+            tv.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
+        }
         return tv;
     }
 }
