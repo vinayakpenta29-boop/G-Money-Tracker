@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Tab 2: Transactions
     private Spinner spinnerMembers, spinnerType;
-    private EditText etAmount;
+    private EditText etAmount, etNotes;
     private ListView listViewTransactions;
     private TransactionAdapter adapter;
     private List<Transaction> transactionList;
@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         tvCurrentMembers = findViewById(R.id.tvCurrentMembers); // Init the new text view
         spinnerMembers = findViewById(R.id.spinnerMembers);
         etAmount = findViewById(R.id.etAmount);
+        etNotes = findViewById(R.id.etNotes);
         spinnerType = findViewById(R.id.spinnerType);
         listViewTransactions = findViewById(R.id.listViewTransactions);
 
@@ -189,13 +190,14 @@ public class MainActivity extends AppCompatActivity {
         spinnerMembers.setAdapter(adapter);
     }
 
-    private void addTransaction() {
+        private void addTransaction() {
         if (spinnerMembers.getSelectedItemPosition() == 0) {
             Toast.makeText(this, "Please select a member", Toast.LENGTH_SHORT).show();
             return;
         }
         String person = spinnerMembers.getSelectedItem().toString();
         String amountStr = etAmount.getText().toString().trim();
+        String notes = etNotes.getText().toString().trim(); // Capture the notes
 
         if (amountStr.isEmpty()) {
             Toast.makeText(this, "Enter amount", Toast.LENGTH_SHORT).show();
@@ -206,12 +208,15 @@ public class MainActivity extends AppCompatActivity {
         String type = spinnerType.getSelectedItemPosition() == 0 ? "owes_me" : "i_owe";
         String date = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(new Date());
 
-        if (dbHelper.addTransaction(person, amount, type, date)) {
+        // Pass notes to dbHelper
+        if (dbHelper.addTransaction(person, amount, type, date, notes)) {
             etAmount.setText("");
+            etNotes.setText(""); // Clear notes box
             loadTransactions();
             Toast.makeText(this, "Transaction Added", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     private void loadTransactions() {
         transactionList = dbHelper.getAllTransactions();
