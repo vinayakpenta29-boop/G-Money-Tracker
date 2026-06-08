@@ -4,6 +4,8 @@
 
     <application
         android:allowBackup="true"
+        android:icon="@drawable/ic_premium_launcher"
+        android:roundIcon="@drawable/ic_premium_launcher"
         android:label="Money Tracker"
         android:supportsRtl="true"
         android:theme="@style/Theme.MoneyTracker"> 
