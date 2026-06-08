@@ -338,14 +338,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-        private void addTotalRow(TableLayout table, double taken, double paid, double bal) {
+    private void addTotalRow(TableLayout table, double taken, double paid, double bal) {
+        // NEW: Add a distinct divider just above the TOTAL row
+        View topDivider = new View(this);
+        topDivider.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, 2));
+        topDivider.setBackgroundColor(Color.parseColor("#CBD5E1")); // Slightly darker slate for emphasis
+        table.addView(topDivider);
+
         TableRow row = new TableRow(this);
         row.setPadding(0, 24, 0, 24); 
         row.setBackgroundColor(Color.parseColor("#EEF2FF")); 
         
         String totalColor = "#4F46E5"; 
 
-        // Replaced $ with ₹
         row.addView(createDataTextView("TOTAL", false, true, totalColor));
         row.addView(createDataTextView("₹" + String.format("%.2f", taken), true, true, totalColor));
         row.addView(createDataTextView("₹" + String.format("%.2f", paid), true, true, totalColor));
@@ -353,6 +358,7 @@ public class MainActivity extends AppCompatActivity {
         
         table.addView(row);
     }
+
 
 
     // Helper for Headers (Smaller, Muted, Uppercase)
