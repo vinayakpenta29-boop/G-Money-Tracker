@@ -27,17 +27,27 @@ public class TransactionAdapter extends ArrayAdapter<Transaction> {
 
         TextView tvPerson = convertView.findViewById(R.id.tvPerson);
         TextView tvDate = convertView.findViewById(R.id.tvDate);
+        TextView tvNotes = convertView.findViewById(R.id.tvNotes);
         TextView tvAmount = convertView.findViewById(R.id.tvAmount);
 
         tvPerson.setText(transaction.getPerson());
         tvDate.setText(transaction.getDate()); 
         
+        // Handle Notes display
+        String notes = transaction.getNotes();
+        if (notes != null && !notes.trim().isEmpty()) {
+            tvNotes.setText(notes);
+            tvNotes.setVisibility(View.VISIBLE);
+        } else {
+            tvNotes.setVisibility(View.GONE);
+        }
+
         if (transaction.getType().equals("owes_me")) {
             tvAmount.setText("+$" + String.format("%.2f", transaction.getAmount()));
-            tvAmount.setTextColor(Color.parseColor("#2ecc71")); 
+            tvAmount.setTextColor(Color.parseColor("#10B981")); // Emerald Green
         } else {
             tvAmount.setText("-$" + String.format("%.2f", transaction.getAmount()));
-            tvAmount.setTextColor(Color.parseColor("#e74c3c")); 
+            tvAmount.setTextColor(Color.parseColor("#EF4444")); // Crisp Red
         }
 
         return convertView;
