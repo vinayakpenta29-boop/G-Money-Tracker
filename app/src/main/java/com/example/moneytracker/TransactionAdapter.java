@@ -43,13 +43,16 @@ public class TransactionAdapter extends ArrayAdapter<Transaction> {
         }
 
         if (transaction.getType().equals("owes_me")) {
-            tvAmount.setText("+$" + String.format("%.2f", transaction.getAmount()));
+            // Replaced $ with ₹
+            tvAmount.setText("+₹" + String.format("%.2f", transaction.getAmount()));
             tvAmount.setTextColor(Color.parseColor("#10B981")); // Emerald Green
         } else {
-            tvAmount.setText("-$" + String.format("%.2f", transaction.getAmount()));
+            // Replaced $ with ₹
+            tvAmount.setText("-₹" + String.format("%.2f", transaction.getAmount()));
             tvAmount.setTextColor(Color.parseColor("#EF4444")); // Crisp Red
         }
 
         return convertView;
+
     }
 }
