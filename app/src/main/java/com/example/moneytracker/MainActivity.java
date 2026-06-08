@@ -71,18 +71,19 @@ public class MainActivity extends AppCompatActivity {
             showMemberLedgerPopup(t.getPerson());
         });
 
-        // Transaction Long Click -> Delete
+                // Transaction Long Click -> Delete
         listViewTransactions.setOnItemLongClickListener((parent, view, position, id) -> {
             Transaction t = transactionList.get(position);
             new AlertDialog.Builder(this)
                 .setTitle("Delete")
-                .setMessage("Delete this $" + t.getAmount() + " record?")
+                // Replaced $ with ₹ and formatted the amount cleanly
+                .setMessage("Delete this ₹" + String.format("%.2f", t.getAmount()) + " record?")
                 .setPositiveButton("Yes", (d, w) -> deleteTransaction(t.getId()))
                 .setNegativeButton("No", null)
                 .show();
             return true;
         });
-    }
+
 
     private void initViews() {
         tabMembers = findViewById(R.id.tabMembers);
@@ -248,9 +249,10 @@ public class MainActivity extends AppCompatActivity {
         }
         double net = owedToMe - iOweThem;
         
-        String sumText = "Total Taken: $" + String.format("%.2f", owedToMe) + 
-                         "\nTotal Paid: $" + String.format("%.2f", iOweThem) + 
-                         "\nBalance: " + (net >= 0 ? "They owe $" + String.format("%.2f", net) : "You owe $" + String.format("%.2f", Math.abs(net)));
+                // Replaced $ with ₹
+        String sumText = "Total Taken: ₹" + String.format("%.2f", owedToMe) + 
+                         "\nTotal Paid: ₹" + String.format("%.2f", iOweThem) + 
+                         "\nBalance: " + (net >= 0 ? "They owe ₹" + String.format("%.2f", net) : "You owe ₹" + String.format("%.2f", Math.abs(net)));
         tvSummary.setText(sumText);
 
         builder.setTitle("Ledger: " + personName);
@@ -317,42 +319,40 @@ public class MainActivity extends AppCompatActivity {
         table.addView(divider);
     }
 
-    private void addDataRow(TableLayout table, String name, double taken, double paid, double bal) {
+        private void addDataRow(TableLayout table, String name, double taken, double paid, double bal) {
         TableRow row = new TableRow(this);
-        // Add vertical spacing to rows so they breathe
         row.setPadding(0, 16, 0, 16); 
         
-        // Data styling: Name is dark, Numbers are muted slate, Balance is bold dark
+        // Replaced $ with ₹
         row.addView(createDataTextView(name, false, false, "#0F172A"));
-        row.addView(createDataTextView("$" + String.format("%.2f", taken), true, false, "#475569"));
-        row.addView(createDataTextView("$" + String.format("%.2f", paid), true, false, "#475569"));
-        row.addView(createDataTextView("$" + String.format("%.2f", bal), true, true, "#0F172A"));
+        row.addView(createDataTextView("₹" + String.format("%.2f", taken), true, false, "#475569"));
+        row.addView(createDataTextView("₹" + String.format("%.2f", paid), true, false, "#475569"));
+        row.addView(createDataTextView("₹" + String.format("%.2f", bal), true, true, "#0F172A"));
         table.addView(row);
         
-        // Add a very faint divider between rows
         View divider = new View(this);
         divider.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, 1));
         divider.setBackgroundColor(Color.parseColor("#F1F5F9"));
         table.addView(divider);
     }
 
-    private void addTotalRow(TableLayout table, double taken, double paid, double bal) {
+
+        private void addTotalRow(TableLayout table, double taken, double paid, double bal) {
         TableRow row = new TableRow(this);
-        row.setPadding(0, 24, 0, 24); // Thick padding for the total row
-        
-        // Premium Indigo 50 background tint
+        row.setPadding(0, 24, 0, 24); 
         row.setBackgroundColor(Color.parseColor("#EEF2FF")); 
         
-        // Primary brand color for the text
         String totalColor = "#4F46E5"; 
 
+        // Replaced $ with ₹
         row.addView(createDataTextView("TOTAL", false, true, totalColor));
-        row.addView(createDataTextView("$" + String.format("%.2f", taken), true, true, totalColor));
-        row.addView(createDataTextView("$" + String.format("%.2f", paid), true, true, totalColor));
-        row.addView(createDataTextView("$" + String.format("%.2f", bal), true, true, totalColor));
+        row.addView(createDataTextView("₹" + String.format("%.2f", taken), true, true, totalColor));
+        row.addView(createDataTextView("₹" + String.format("%.2f", paid), true, true, totalColor));
+        row.addView(createDataTextView("₹" + String.format("%.2f", bal), true, true, totalColor));
         
         table.addView(row);
     }
+
 
     // Helper for Headers (Smaller, Muted, Uppercase)
     private TextView createHeaderTextView(String text, boolean alignRight) {
@@ -361,8 +361,8 @@ public class MainActivity extends AppCompatActivity {
         tv.setPadding(8, 8, 8, 16);
         tv.setTextColor(Color.parseColor("#64748B")); // Slate gray
         tv.setTextSize(12f);
-        tv.setTypeface(null, Typeface.BOLD);
-        tv.setLetterSpacing(0.05f); // Premium tracking (spacing between letters)
+        tv.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
+        tv.setLetterSpacing(0.05f);  // Premium tracking (spacing between letters)
         if (alignRight) {
             tv.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
         }
@@ -377,7 +377,9 @@ public class MainActivity extends AppCompatActivity {
         tv.setTextColor(Color.parseColor(hexColor));
         tv.setTextSize(14f);
         if (isBold) {
-            tv.setTypeface(null, Typeface.BOLD);
+            tv.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
+        } else {
+            tv.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
         }
         if (alignRight) {
             tv.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
