@@ -11,7 +11,7 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "MoneyTracker.db";
-    private static final int DATABASE_VERSION = 3; // Upgraded version
+    private static final int DATABASE_VERSION = 4; // Upgraded version for Notes
     private static final String TABLE_TRANSACTIONS = "transactions";
     private static final String TABLE_MEMBERS = "members";
 
@@ -21,7 +21,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTransactions = "CREATE TABLE " + TABLE_TRANSACTIONS + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, PERSON TEXT, AMOUNT REAL, TYPE TEXT, DATE TEXT)";
+        // Added NOTES TEXT
+        String createTransactions = "CREATE TABLE " + TABLE_TRANSACTIONS + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, PERSON TEXT, AMOUNT REAL, TYPE TEXT, DATE TEXT, NOTES TEXT)";
         String createMembers = "CREATE TABLE " + TABLE_MEMBERS + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT UNIQUE)";
         db.execSQL(createTransactions);
         db.execSQL(createMembers);
@@ -57,13 +58,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // --- TRANSACTION METHODS ---
-    public boolean addTransaction(String person, double amount, String type, String date) {
+    public boolean addTransaction(String person, double amount, String type, String date, String notes) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("PERSON", person);
         contentValues.put("AMOUNT", amount);
         contentValues.put("TYPE", type);
         contentValues.put("DATE", date);
+        contentValues.put("NOTES", notes); // NEW
         long result = db.insert(TABLE_TRANSACTIONS, null, contentValues);
         return result != -1;
     }
@@ -93,7 +95,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 double amount = cursor.getDouble(2);
                 String type = cursor.getString(3);
                 String date = cursor.getString(4);
-                list.add(new Transaction(id, person, amount, type, date));
+                String notes = cursor.getString(5); // Read Notes
+                list.add(new Transaction(id, person, amount, type, date, notes));
             } while (cursor.moveToNext());
         }
         cursor.close();
