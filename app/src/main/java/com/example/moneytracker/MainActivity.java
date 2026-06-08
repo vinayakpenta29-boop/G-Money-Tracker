@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 .show();
             return true;
         });
+    }
 
 
     private void initViews() {
@@ -141,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
             layoutMembers.setVisibility(View.VISIBLE);
             updateCurrentMembersList();
         } else if (index == 1) {
-            tabTransactions.setBackgroundResource(R.drawable.tab_selected);
+            tabTransactions.setBackgroundResource(R.drawable.tab_selected_stroke);
             tabTransactions.setTextColor(Color.parseColor("#0F172A"));
             layoutTransactions.setVisibility(View.VISIBLE);
             loadMembersIntoSpinner(); 
