@@ -123,25 +123,40 @@
             
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
                 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent" android:layout_height="wrap_content"
-                    app:cardCornerRadius="16dp" app:cardElevation="0dp" app:cardBackgroundColor="@color/colorSurface" android:layout_marginBottom="16dp">
+                    app:cardCornerRadius="16dp" app:cardElevation="0dp" 
+                    app:cardBackgroundColor="@color/colorSurface" 
+                    app:strokeWidth="1dp" app:strokeColor="#E2E8F0"
+                    android:layout_marginBottom="16dp">
+                    
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
                         <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
                             android:text="They Owe Me" android:textColor="@color/positiveGreen" android:textStyle="bold" android:textSize="18sp" android:layout_marginBottom="12dp"/>
                         <TableLayout android:id="@+id/tableOweMe" android:layout_width="match_parent" android:layout_height="wrap_content" android:stretchColumns="*"/>
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
-                <androidx.cardview.widget.CardView
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#D1D5DB"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginBottom="16dp"/>
+
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent" android:layout_height="wrap_content"
-                    app:cardCornerRadius="16dp" app:cardElevation="0dp" app:cardBackgroundColor="@color/colorSurface" android:layout_marginBottom="24dp">
+                    app:cardCornerRadius="16dp" app:cardElevation="0dp" 
+                    app:cardBackgroundColor="@color/colorSurface" 
+                    app:strokeWidth="1dp" app:strokeColor="#E2E8F0"
+                    android:layout_marginBottom="24dp">
+                    
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
                         <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
                             android:text="I Owe Them" android:textColor="@color/negativeRed" android:textStyle="bold" android:textSize="18sp" android:layout_marginBottom="12dp"/>
                         <TableLayout android:id="@+id/tableIOwe" android:layout_width="match_parent" android:layout_height="wrap_content" android:stretchColumns="*"/>
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
         </ScrollView>
     </FrameLayout>
