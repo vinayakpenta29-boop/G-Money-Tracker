@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
             layoutMembers.setVisibility(View.VISIBLE);
             updateCurrentMembersList();
         } else if (index == 1) {
-            tabTransactions.setBackgroundResource(R.drawable.tab_selected_stroke);
+            tabTransactions.setBackgroundResource(R.drawable.tab_selected);
             tabTransactions.setTextColor(Color.parseColor("#0F172A"));
             layoutTransactions.setVisibility(View.VISIBLE);
             loadMembersIntoSpinner(); 
