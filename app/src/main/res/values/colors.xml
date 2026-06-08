@@ -5,4 +5,5 @@
 
     <color name="colorBackground">#F8FAFC</color> <color name="colorSurface">#FFFFFF</color>
     <color name="colorTabContainer">#E2E8F0</color> <color name="textPrimary">#0F172A</color> <color name="textSecondary">#64748B</color> <color name="positiveGreen">#10B981</color> <color name="negativeRed">#EF4444</color> <color name="dividerColor">#E2E8F0</color>
+    <color name="colorWarm">#FDF4DC</color>
 </resources>
