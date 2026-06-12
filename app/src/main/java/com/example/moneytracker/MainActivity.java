@@ -237,8 +237,24 @@ public class MainActivity extends AppCompatActivity {
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_ledger, null);
         builder.setView(view);
 
-        TextView tvSummary = view.findViewById(R.id.tvPopupSummary);
+        // Create the dialog early so we can customize the window background
+        AlertDialog dialog = builder.create();
+        
+        // This makes the system's square background transparent so our premium rounded card shows!
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+        }
+
+        // Link our new custom UI elements
+        TextView tvTitle = view.findViewById(R.id.tvLedgerTitle);
+        TextView tvTaken = view.findViewById(R.id.tvTotalTaken);
+        TextView tvPaid = view.findViewById(R.id.tvTotalPaid);
+        TextView tvBalance = view.findViewById(R.id.tvNetBalance);
         ListView lvPopup = view.findViewById(R.id.lvPopupTransactions);
+        Button btnClose = view.findViewById(R.id.btnCloseLedger);
+
+        // Set the name in the header
+        tvTitle.setText(personName);
 
         List<Transaction> memTrans = dbHelper.getTransactionsByPerson(personName);
         lvPopup.setAdapter(new TransactionAdapter(this, memTrans));
@@ -250,15 +266,23 @@ public class MainActivity extends AppCompatActivity {
         }
         double net = owedToMe - iOweThem;
         
-                // Replaced $ with ₹
-        String sumText = "Total Taken: ₹" + String.format("%.2f", owedToMe) + 
-                         "\nTotal Paid: ₹" + String.format("%.2f", iOweThem) + 
-                         "\nBalance: " + (net >= 0 ? "They owe ₹" + String.format("%.2f", net) : "You owe ₹" + String.format("%.2f", Math.abs(net)));
-        tvSummary.setText(sumText);
+        // Format the monospace amounts
+        tvTaken.setText("₹" + String.format("%.2f", owedToMe));
+        tvPaid.setText("₹" + String.format("%.2f", iOweThem));
+        
+        // Dynamically color the Net Balance
+        if (net >= 0) {
+            tvBalance.setText("They owe ₹" + String.format("%.2f", net));
+            tvBalance.setTextColor(Color.parseColor("#10B981")); // Emerald Green
+        } else {
+            tvBalance.setText("You owe ₹" + String.format("%.2f", Math.abs(net)));
+            tvBalance.setTextColor(Color.parseColor("#EF4444")); // Crisp Red
+        }
 
-        builder.setTitle("Ledger: " + personName);
-        builder.setPositiveButton("Close", null);
-        builder.show();
+        // Set up our custom pill button to close the pop-up
+        btnClose.setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
     }
 
     // --- TAB 3 LOGIC (SETTLEMENT) ---
