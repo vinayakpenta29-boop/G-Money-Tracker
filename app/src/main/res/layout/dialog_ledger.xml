@@ -1,19 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="500dp"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="8dp"
+    app:cardBackgroundColor="@android:color/white">
 
-    <TextView android:id="@+id/tvPopupSummary"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="#333"
-        android:layout_marginBottom="12dp"/>
+        android:layout_height="550dp" 
+        android:orientation="vertical">
 
-    <ListView android:id="@+id/lvPopupTransactions"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        <!-- Premium Header Area -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#EEF2FF"
+            android:padding="20dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Account Ledger"
+                android:textSize="12sp"
+                android:textColor="#64748B"
+                android:textStyle="bold"
+                android:letterSpacing="0.05"
+                android:layout_marginBottom="4dp"/>
+            <TextView
+                android:id="@+id/tvLedgerTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#0F172A"/>
+        </LinearLayout>
 
-</LinearLayout>
+        <!-- Summary Stats Grid -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="12dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TOTAL TAKEN" android:textSize="11sp" android:textColor="#64748B" android:textStyle="bold" android:letterSpacing="0.05"/>
+                <TextView android:id="@+id/tvTotalTaken" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#10B981" android:textSize="16sp" android:textStyle="bold" android:fontFamily="monospace"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TOTAL PAID" android:textSize="11sp" android:textColor="#64748B" android:textStyle="bold" android:letterSpacing="0.05"/>
+                <TextView android:id="@+id/tvTotalPaid" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#EF4444" android:textSize="16sp" android:textStyle="bold" android:fontFamily="monospace"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Main Balance Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="20dp"
+            android:paddingBottom="20dp"
+            android:orientation="vertical">
+             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="NET BALANCE" android:textSize="11sp" android:textColor="#64748B" android:textStyle="bold" android:letterSpacing="0.05"/>
+             <TextView android:id="@+id/tvNetBalance" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="22sp" android:textStyle="bold" android:fontFamily="monospace"/>
+        </LinearLayout>
+
+        <!-- Divider Line -->
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#E2E8F0"/>
+
+        <!-- The List of Transactions -->
+        <ListView
+            android:id="@+id/lvPopupTransactions"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:divider="#F1F5F9"
+            android:dividerHeight="1dp"
+            android:padding="8dp"/>
+
+        <!-- Custom Styled Close Button -->
+        <Button
+            android:id="@+id/btnCloseLedger"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Close Ledger"
+            android:backgroundTint="#F8FAFC"
+            android:textColor="#4F46E5"
+            android:textStyle="bold"
+            android:layout_margin="16dp"
+            app:cornerRadius="100dp"
+            app:strokeColor="#E2E8F0"
+            app:strokeWidth="1dp"
+            style="?attr/materialButtonOutlinedStyle"/>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
